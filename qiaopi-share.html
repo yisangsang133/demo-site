@@ -643,7 +643,7 @@
         }
 
         .letter-preview-paper {
-            min-height: 28rem;
+            min-height: 23.5rem;
             border-radius: 0.75rem;
             box-shadow: 0 20px 40px rgba(44,36,27,0.16), inset 0 0 30px rgba(0,0,0,0.08);
         }
@@ -686,9 +686,9 @@
             height: 100%;
             display: inline-flex;
             flex-direction: column;
-            gap: 2.2rem;
+            gap: 1.15rem;
             align-items: flex-start;
-            padding: 0 1.1rem 0 0.5rem;
+            padding: 0.35rem 0.55rem 0.7rem 0.35rem;
         }
 
         .letter-section {
@@ -706,13 +706,13 @@
         }
 
         .letter-body {
-            max-width: 18em;
+            max-width: 14em;
         }
 
         .letter-signoff {
             align-self: flex-end;
-            margin-right: 1.4rem;
-            padding-bottom: 3.6rem;
+            margin-right: 0.45rem;
+            padding-bottom: 1.4rem;
             opacity: 0.92;
         }
 
@@ -753,13 +753,13 @@
         .detail-letter-vertical {
             writing-mode: vertical-rl;
             text-orientation: upright;
-            height: 22rem;
+            height: 100%;
             overflow-x: auto;
             overflow-y: hidden;
-            line-height: 2;
+            line-height: 1.95;
             letter-spacing: 0.16em;
             white-space: pre-wrap;
-            padding: 0.45rem 0.75rem 1.2rem 0.5rem;
+            padding: 0.25rem 0.35rem 0.25rem 0.15rem;
         }
 
         .detail-letter-vertical::-webkit-scrollbar {
@@ -803,7 +803,8 @@
             margin-bottom: 0.75rem;
         }
 
-        .detail-letter-seal {
+        .detail-letter-seal,
+        .letter-preview-seal {
             border: 1px solid rgba(44,36,27,0.22);
             padding: 0.15rem 0.45rem;
             background: rgba(255,255,255,0.08);
@@ -814,7 +815,7 @@
         .detail-letter-body-wrap {
             position: relative;
             z-index: 1;
-            height: 24rem;
+            height: 100%;
             padding-top: 0.25rem;
             background-image: repeating-linear-gradient(to left, rgba(140,115,85,0.1) 0 1px, transparent 1px 2.45rem);
             background-position: right top;
@@ -1073,6 +1074,17 @@
             opacity: 0.7;
         }
 
+        .cover-blessing-pattern {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.13;
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23801f1a' stroke-width='1.2' opacity='0.55'%3E%3Cpath d='M42 48c8-10 22-13 33-6 9 6 14 18 11 30-3 11-12 20-22 25-11-4-20-13-23-24-3-11 0-21 7-25 5-3 10-3 14 0 3 2 4 6 3 10'/%3E%3Cpath d='M138 48c-8-10-22-13-33-6-9 6-14 18-11 30 3 11 12 20 22 25 11-4 20-13 23-24 3-11 0-21-7-25-5-3-10-3-14 0-3 2-4 6-3 10'/%3E%3Cpath d='M64 72c10 6 18 15 26 27 8-12 16-21 26-27'/%3E%3Cpath d='M90 24v18M90 138v18M24 90h18M138 90h18' opacity='0.25'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 150px 150px;
+            background-position: center;
+        }
+
         .style-default .cover-aged-layer {
             background:
                 radial-gradient(circle at 10% 16%, rgba(90, 60, 30, 0.12), transparent 15%),
@@ -1263,6 +1275,22 @@
 
         .style-romance .cover-recipient {
             color: rgba(54, 32, 38, 0.92);
+        }
+
+        .cover-fixed-blessing {
+            letter-spacing: 0.22em;
+            line-height: 1.4;
+        }
+
+        .cover-blessing-pattern {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.13;
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23801f1a' stroke-width='1.2' opacity='0.55'%3E%3Cpath d='M42 48c8-10 22-13 33-6 9 6 14 18 11 30-3 11-12 20-22 25-11-4-20-13-23-24-3-11 0-21 7-25 5-3 10-3 14 0 3 2 4 6 3 10'/%3E%3Cpath d='M138 48c-8-10-22-13-33-6-9 6-14 18-11 30 3 11 12 20 22 25 11-4 20-13 23-24 3-11 0-21-7-25-5-3-10-3-14 0-3 2-4 6-3 10'/%3E%3Cpath d='M64 72c10 6 18 15 26 27 8-12 16-21 26-27'/%3E%3Cpath d='M90 24v18M90 138v18M24 90h18M138 90h18' opacity='0.25'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 150px 150px;
+            background-position: center;
         }
 
         .cover-sheen {
@@ -1601,9 +1629,9 @@
 
             <div id="preview-paper" class="letter-preview-paper qiaopi-paper style-default p-5 relative overflow-hidden">
                 <div class="letter-preview-header" style="font-family: 'KaiTi', serif;">
-                    <div class="letter-preview-seal">银信批笺</div>
+                    <div class="letter-preview-seal">银信家书</div>
                 </div>
-                <div class="letter-preview-columns text-[22px] text-[#2c241b] pt-14 pb-4 px-2" style="font-family: 'KaiTi', serif;">
+                <div class="letter-preview-columns text-[20px] text-[#2c241b] pt-14 pb-4 px-2" style="font-family: 'KaiTi', serif;">
                     <div class="letter-preview-scroll">
                         <div id="preview-letter" class="letter-preview-content">
                             <div id="preview-salutation" class="letter-section letter-salutation">某某亲启：</div>
@@ -1685,6 +1713,7 @@
                 <div class="cover-aged-layer"></div>
                 <div class="cover-fiber-layer"></div>
                 <div class="cover-sheen"></div>
+                <div class="cover-blessing-pattern"></div>
 
                 <svg id="cover-stamp" class="cover-stamp" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
 
@@ -1693,8 +1722,8 @@
                 </div>
 
                 <div class="w-[27%] flex justify-end relative z-10">
-                    <div id="cv-first" class="vertical-text cover-side-note text-[1.65rem] text-[#2c241b] font-bold mt-14 p-3 border border-black/10 rounded-sm max-h-[24rem] overflow-hidden" style="font-family: 'KaiTi', serif;">
-                        尚祈珍重 不尽依依
+                    <div id="cv-first" class="vertical-text cover-side-note cover-fixed-blessing text-[1.65rem] text-[#2c241b] font-bold mt-14 p-3 border border-black/10 rounded-sm max-h-[24rem] overflow-hidden" style="font-family: 'KaiTi', serif;">
+                        纸短情长 伏惟珍重
                     </div>
                 </div>
 
@@ -1703,7 +1732,7 @@
                 </div>
 
                 <div class="w-[27%] flex items-end pb-10 relative z-10">
-                    <div id="cv-to" class="vertical-text cover-recipient text-[2rem] text-gray-900 font-bold tracking-[0.25em]">淑柔吾妻 亲启</div>
+                    <div id="cv-to" class="vertical-text cover-recipient text-[2rem] text-gray-900 font-bold tracking-[0.25em]">淑柔吾妻亲启</div>
                 </div>
             </div>
         </div>
@@ -1728,12 +1757,12 @@
         </div>
         <div class="px-8 pb-10">
             <div class="border-t border-dashed border-[#8c7355]/30 my-6"></div>
-            <div class="detail-letter-paper rounded-sm">
+            <div class="detail-letter-paper letter-preview-paper rounded-sm" style="min-height: 23.5rem;">
                 <div class="detail-letter-header" style="font-family: 'KaiTi', serif;">
                     <div class="detail-letter-seal">银信家书</div>
                 </div>
                 <div class="detail-letter-body-wrap">
-                    <div class="detail-letter-layout text-lg text-[#2c241b] font-serif" style="font-family: 'KaiTi', serif;">
+                    <div class="detail-letter-layout text-[20px] text-[#2c241b] font-serif" style="font-family: 'KaiTi', serif;">
                         <div id="dt-msg" class="detail-letter-vertical whitespace-pre-wrap">
                             <div id="dt-recipient" class="detail-letter-section detail-letter-recipient">某某亲启：</div>
                             <div id="dt-body" class="detail-letter-section detail-letter-body">见字如面...</div>
@@ -2314,7 +2343,7 @@
         const detailReceiver = mail.receiver ? (mail.receiver + '亲启') : '吾家亲启';
         let recipient = detailReceiver + '：';
         let body = mail.msg || '';
-        let signoff = (mail.sender || '来信人') + '谨寄';
+        let signoff = '此复\n' + (mail.sender || '来信人') + '谨寄';
 
         if (parts.length >= 3) {
             recipient = parts.shift();
