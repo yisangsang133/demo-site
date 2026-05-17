@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>侨批 - 数字化银信原型</title>
+    <!-- Offline standalone build: no Tailwind CDN, no external font import -->
+    <style>
+        :root {
+            --ancient-red: #c12c26;
+            --ancient-brown: #8c7355;
+            --paper-light: #f2eade;
+            --paper-dark: #e4d5c1;
+            --text-main: #2c241b;
+        }
+
+        /* Offline utility styles replacing Tailwind CDN */
+        * { box-sizing: border-box; }
+        .fixed { position: fixed; }
+        .absolute { position: absolute; }
+        .relative { position: relative; }
+        .sticky { position: sticky; }
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+        .hidden { display: none; }
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .flex-1 { flex: 1 1 0%; }
+        .flex-col { flex-direction: column; }
+        .flex-wrap { flex-wrap: wrap; }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .items-end { align-items: flex-end; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-end { justify-content: flex-end; }
+        .self-center { align-self: center; }
+        .w-full { width: 100%; }
+        .w-1\/2 { width: 50%; }
+        .w-4\/5 { width: 80%; }
+        .w-3 { width: 0.75rem; }
+        .w-4 { width: 1rem; }
+        .w-5 { width: 1.25rem; }
+        .w-6 { width: 1.5rem; }
+        .w-10 { width: 2.5rem; }
+        .w-16 { width: 4rem; }
+        [class~="w-[22%]"] { width: 22%; }
+        [class~="w-[27%]"] { width: 27%; }
+        [class~="w-[34%]"] { width: 34%; }
+        [class~="w-[85%]"] { width: 85%; }
+        .h-3 { height: 0.75rem; }
+        .h-4 { height: 1rem; }
+        .h-5 { height: 1.25rem; }
+        .h-6 { height: 1.5rem; }
+        .h-10 { height: 2.5rem; }
+        .h-16 { height: 4rem; }
+        .h-24 { height: 6rem; }
+        .h-32 { height: 8rem; }
+        .h-full { height: 100%; }
+        [class~="h-[580px]"] { height: 580px; }
+        .top-0 { top: 0; }
+        .top-6 { top: 1.5rem; }
+        .left-0 { left: 0; }
+        .left-4 { left: 1rem; }
+        .left-6 { left: 1.5rem; }
+        .left-1\/2 { left: 50%; }
+        .bottom-0 { bottom: 0; }
+        .-bottom-6 { bottom: -1.5rem; }
+        .inset-y-0 { top: 0; bottom: 0; }
+        [class~="left-[39%]"] { left: 39%; }
+        .z-10 { z-index: 10; }
+        .z-50 { z-index: 50; }
+        [class~="z-[2]"] { z-index: 2; }
+        [class~="z-[1000]"] { z-index: 1000; }
+        .overflow-hidden { overflow: hidden; }
+        .pointer-events-none { pointer-events: none; }
+        .cursor-pointer { cursor: pointer; }
+        .select-all { user-select: all; }
+        .text-left { text-align: left; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .font-medium { font-weight: 500; }
+        .font-bold { font-weight: 700; }
+        .font-black { font-weight: 900; }
+        .font-serif { font-family: serif; }
+        .text-xs { font-size: 0.75rem; line-height: 1rem; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-base { font-size: 1rem; line-height: 1.5rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+        [class~="text-[10px]"] { font-size: 10px; }
+        [class~="text-[15px]"] { font-size: 15px; }
+        [class~="text-[22px]"] { font-size: 22px; }
+        [class~="text-[1.65rem]"] { font-size: 1.65rem; }
+        [class~="text-[1.9rem]"] { font-size: 1.9rem; }
+        [class~="text-[2rem]"] { font-size: 2rem; }
+        .leading-3 { line-height: 0.75rem; }
+        .leading-relaxed { line-height: 1.625; }
+        .whitespace-pre-wrap { white-space: pre-wrap; }
+        .indent-8 { text-indent: 2rem; }
+        .tracking-widest { letter-spacing: 0.1em; }
+        [class~="tracking-[0.2em]"] { letter-spacing: 0.2em; }
+        [class~="tracking-[0.25em]"] { letter-spacing: 0.25em; }
+        [class~="tracking-[0.35em]"] { letter-spacing: 0.35em; }
+        .text-white { color: #fff; }
+        [class~="text-white/90"] { color: rgba(255,255,255,0.9); }
+        .text-gray-300 { color: #d1d5db; }
+        .text-gray-400 { color: #9ca3af; }
+        .text-gray-500 { color: #6b7280; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-800 { color: #1f2937; }
+        .text-gray-900 { color: #111827; }
+        .text-green-700 { color: #15803d; }
+        .text-orange-600 { color: #ea580c; }
+        [class~="text-[#1a1410]/90"] { color: rgba(26,20,16,0.9); }
+        [class~="text-[#2c241b]"] { color: #2c241b; }
+        [class~="text-[#5c4a3d]"] { color: #5c4a3d; }
+        [class~="text-[#8c7355]"] { color: #8c7355; }
+        [class~="text-[#b22222]"] { color: #b22222; }
+        [class~="text-[#c12c26]"] { color: #c12c26; }
+        [class~="text-[#dcb581]"] { color: #dcb581; }
+        .bg-white { background-color: #fff; }
+        [class~="bg-white/20"] { background-color: rgba(255,255,255,0.2); }
+        [class~="bg-white/80"] { background-color: rgba(255,255,255,0.8); }
+        .bg-black { background-color: #000; }
+        [class~="bg-black/80"] { background-color: rgba(0,0,0,0.8); }
+        .bg-transparent { background-color: transparent; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-gray-200 { background-color: #e5e7eb; }
+        [class~="bg-orange-50"] { background-color: #fff7ed; }
+        [class~="bg-red-50"] { background-color: #fef2f2; }
+        [class~="bg-[#c12c26]"] { background-color: #c12c26; }
+        [class~="bg-[#b22222]"] { background-color: #b22222; }
+        [class~="bg-[#f2eade]"] { background-color: #f2eade; }
+        [class~="bg-[#f8f3ea]"] { background-color: #f8f3ea; }
+        [class~="bg-[#faf6ef]"] { background-color: #faf6ef; }
+        .border { border-width: 1px; border-style: solid; border-color: currentColor; }
+        .border-2 { border-width: 2px; border-style: solid; border-color: currentColor; }
+        .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+        .border-t { border-top-width: 1px; border-top-style: solid; }
+        .border-dashed { border-style: dashed; }
+        .border-gray-100 { border-color: #f3f4f6; }
+        .border-gray-300 { border-color: #d1d5db; }
+        [class~="border-[#8c7355]"] { border-color: #8c7355; }
+        [class~="border-[#8c7355]/30"] { border-color: rgba(140,115,85,0.3); }
+        [class~="border-[#b22222]"] { border-color: #b22222; }
+        [class~="border-[#c12c26]"] { border-color: #c12c26; }
+        [class~="border-[#d8c7af]"] { border-color: #d8c7af; }
+        [class~="border-[#eadac1]"] { border-color: #eadac1; }
+        [class~="border-black/10"] { border-color: rgba(0,0,0,0.1); }
+        [class~="border-white/30"] { border-color: rgba(255,255,255,0.3); }
+        .rounded { border-radius: 0.25rem; }
+        .rounded-sm { border-radius: 0.125rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-full { border-radius: 9999px; }
+        [class~="rounded-b-[40px]"] { border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; }
+        .shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+        .shadow-md { box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+        .shadow-lg { box-shadow: 0 10px 20px rgba(0,0,0,0.16); }
+        .shadow-xl { box-shadow: 0 14px 28px rgba(0,0,0,0.18); }
+        .shadow-2xl { box-shadow: 0 20px 40px rgba(0,0,0,0.28); }
+        .shadow-inner { box-shadow: inset 0 2px 6px rgba(0,0,0,0.18); }
+        .opacity-0 { opacity: 0; }
+        .opacity-60 { opacity: 0.6; }
+        .opacity-70 { opacity: 0.7; }
+        .outline-none { outline: none; }
+        .transition-opacity { transition: opacity 0.3s; }
+        .duration-300 { transition-duration: 300ms; }
+        .-translate-x-1\/2 { transform: translateX(-50%); }
+        .-translate-y-1\/2 { transform: translateY(-50%); }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+        .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+        .space-x-2 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.5rem; }
+        .space-x-4 > :not([hidden]) ~ :not([hidden]) { margin-left: 1rem; }
+        .divide-y > :not([hidden]) ~ :not([hidden]) { border-top-width: 1px; border-top-style: solid; }
+        .divide-gray-50 > :not([hidden]) ~ :not([hidden]) { border-color: #f9fafb; }
+        .p-1 { padding: 0.25rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-5 { padding: 1.25rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .px-8 { padding-left: 2rem; padding-right: 2rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-3\.5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .pt-2 { padding-top: 0.5rem; }
+        .pt-12 { padding-top: 3rem; }
+        .pt-14 { padding-top: 3.5rem; }
+        .pb-1 { padding-bottom: 0.25rem; }
+        .pb-2 { padding-bottom: 0.5rem; }
+        .pb-3 { padding-bottom: 0.75rem; }
+        .pb-4 { padding-bottom: 1rem; }
+        .pb-10 { padding-bottom: 2.5rem; }
+        .pb-20 { padding-bottom: 5rem; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        .mt-12 { margin-top: 3rem; }
+        .mt-14 { margin-top: 3.5rem; }
+        .-mt-12 { margin-top: -3rem; }
+        .mb-0\.5 { margin-bottom: 0.125rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mr-1 { margin-right: 0.25rem; }
+        .mr-2 { margin-right: 0.5rem; }
+        .mr-4 { margin-right: 1rem; }
+        .ml-1 { margin-left: 0.25rem; }
+        .ml-4 { margin-left: 1rem; }
+        .my-6 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+        .h-px { height: 1px; }
+        .system-ui { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .accent-\[\#c12c26\] { accent-color: #c12c26; }
+        [class~="active:bg-gray-50"]:active { background-color: #f9fafb; }
+    
+        body {
+            background-color: #d1d5db;
+            font-family: 'STKaiti', 'KaiTi', 'FangSong', 'STSong', 'SimSun', serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            color: var(--text-main);
+        }
+
+        /* 模拟手机容器 */
+        #app-container {
+            width: 100%;
+            max-width: 414px;
+            height: 100vh;
+            background-color: var(--paper-light);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        @media (min-width: 640px) {
+            #app-container {
+                height: 844px;
+                margin: 20px 0;
+                border-radius: 30px;
+                border: 8px solid #1f2937;
+            }
+        }
+
+        /* 页面切换动画 */
+        .page {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--paper-light);
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+        .page.active { transform: translateX(0); }
+        .page::-webkit-scrollbar { display: none; }
+
+        /* 笺谱样式 */
+        .qiaopi-paper { transition: all 0.5s ease; position: relative; }
+
+        /* 默认：素雅 */
+        .style-default {
+            background-color: #dcb581;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' opacity='0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.1'/%3E%3C/svg%3E");
+        }
+
+        /* 浪漫：才子佳人 */
+        .style-romance {
+            background-color: #e8b4b8;
+            background-image: radial-gradient(circle at 20% 30%, rgba(194, 123, 160, 0.1) 0%, transparent 50%);
+        }
+        .style-romance .red-banner { background-color: #a83250; }
+
+        /* 家书：抵万金 */
+        .style-family {
+            background-color: #b59b75;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(143, 116, 79, 0.2) 40px);
+        }
+        .style-family .red-banner { background-color: #571616; }
+
+        /* 竖排文字 */
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            letter-spacing: 0.3em;
+        }
+
+        /* 弹窗 */
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.show { opacity: 1; pointer-events: auto; }
+
+        /* 按钮点击态 */
+        .btn-active:active { transform: scale(0.98); opacity: 0.9; }
+
+        /* 顶部导航阴影 */
+        .nav-header {
+            background-color: var(--ancient-red);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 0.2em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .template-thumb {
+            position: relative;
+            height: 8.5rem;
+            border-radius: 0.9rem;
+            overflow: hidden;
+            border: 2px solid rgba(140, 115, 85, 0.2);
+            box-shadow: 0 10px 20px rgba(44, 36, 27, 0.08);
+            background-size: cover;
+        }
+
+        .template-thumb::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.24), transparent 42%),
+                radial-gradient(circle at 18% 18%, rgba(255,255,255,0.18), transparent 28%),
+                linear-gradient(to bottom, rgba(80,50,20,0.05), transparent 25%, transparent 75%, rgba(40,20,10,0.08));
+        }
+
+        .template-thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18), inset 0 0 30px rgba(70, 40, 15, 0.16);
+            pointer-events: none;
+        }
+
+        .template-aged {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+            opacity: 0.65;
+        }
+
+        .template-aged::before,
+        .template-aged::after {
+            content: '';
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .template-aged::before {
+            inset: 0;
+            background:
+                radial-gradient(circle at 8% 18%, rgba(110, 78, 45, 0.14), transparent 18%),
+                radial-gradient(circle at 90% 14%, rgba(90, 60, 30, 0.12), transparent 15%),
+                radial-gradient(circle at 14% 88%, rgba(95, 65, 32, 0.12), transparent 16%),
+                linear-gradient(115deg, transparent 0 76%, rgba(70,40,15,0.08) 84%, transparent 100%);
+        }
+
+        .template-aged::after {
+            inset: 0.35rem;
+            border-radius: 0.65rem;
+            box-shadow:
+                inset 1px 0 0 rgba(255,255,255,0.08),
+                inset -2px 0 0 rgba(80, 50, 20, 0.08),
+                inset 0 2px 0 rgba(255,255,255,0.06),
+                inset 0 -2px 0 rgba(80, 50, 20, 0.08);
+            opacity: 0.8;
+        }
+
+        .template-crease {
+            position: absolute;
+            top: 0.4rem;
+            bottom: 0.4rem;
+            left: 18%;
+            width: 1px;
+            z-index: 1;
+            background: linear-gradient(to bottom, transparent, rgba(80,50,20,0.14) 14%, rgba(255,255,255,0.08) 48%, rgba(80,50,20,0.12) 82%, transparent);
+            transform: rotate(-1.8deg);
+            opacity: 0.7;
+        }
+
+        .template-thumb-band {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 30%;
+            transform: translateX(-50%);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.18);
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.12), transparent 16%, transparent 84%, rgba(0,0,0,0.16)),
+                repeating-linear-gradient(to bottom, rgba(255,255,255,0.08) 0 2px, rgba(0,0,0,0.02) 2px 6px, transparent 6px 16px);
+        }
+
+        .template-label {
+            position: absolute;
+            top: 0.8rem;
+            left: 0.75rem;
+            z-index: 2;
+            border: 1.5px solid rgba(44, 36, 27, 0.72);
+            padding: 2px;
+            background: rgba(242, 234, 222, 0.18);
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.08);
+        }
+
+        .template-label-inner {
+            border: 1px solid rgba(44, 36, 27, 0.72);
+            padding: 0.15rem 0.45rem;
+            color: rgba(26, 20, 14, 0.9);
+            font-size: 0.7rem;
+            letter-spacing: 0.22em;
+            font-weight: 700;
+        }
+
+        .template-title {
+            position: absolute;
+            bottom: 0.7rem;
+            left: 0.8rem;
+            z-index: 2;
+            color: rgba(26, 20, 14, 0.92);
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+        }
+
+        .template-address {
+            position: absolute;
+            right: 0.75rem;
+            top: 0.8rem;
+            z-index: 2;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            color: rgba(44, 36, 27, 0.74);
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+        }
+
+        .template-stamp {
+            position: absolute;
+            left: 24%;
+            top: 1rem;
+            width: 2.7rem;
+            height: 2.7rem;
+            border-radius: 9999px;
+            border: 1.5px solid rgba(132, 24, 24, 0.5);
+            opacity: 0.5;
+            transform: rotate(-16deg);
+            box-shadow: inset 0 0 0 1px rgba(132, 24, 24, 0.18);
+        }
+
+        .template-stamp-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.42rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: rgba(132, 24, 24, 0.66);
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .template-stamp::before,
+        .template-stamp::after {
+            content: '';
+            position: absolute;
+            inset: 0.38rem;
+            border-radius: 9999px;
+            border: 1px dashed rgba(132, 24, 24, 0.42);
+        }
+
+        .template-stamp::after {
+            inset: 1rem;
+            border-style: solid;
+            opacity: 0.65;
+        }
+
+        .template-wave {
+            position: absolute;
+            left: 33%;
+            top: 1.25rem;
+            width: 38%;
+            height: 2.6rem;
+            opacity: 0.34;
+            color: rgba(132, 24, 24, 0.72);
+        }
+
+        .template-wave path {
+            stroke-linecap: round;
+        }
+
+        .template-corner-shadow {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 4.2rem;
+            height: 4.2rem;
+            background: linear-gradient(315deg, rgba(80,50,20,0.12), transparent 65%);
+            z-index: 1;
+        }
+
+        .template-thumb.style-default {
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 45%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.11'/%3E%3C/svg%3E");
+        }
+
+        .template-thumb.style-default .template-stamp {
+            left: 23%;
+            top: 0.92rem;
+            transform: rotate(-14deg);
+        }
+
+        .template-thumb.style-default .template-wave {
+            left: 34%;
+            top: 1.1rem;
+            width: 36%;
+            opacity: 0.3;
+        }
+
+        .template-thumb.style-default .template-aged::before {
+            background:
+                radial-gradient(circle at 11% 20%, rgba(110, 78, 45, 0.11), transparent 18%),
+                radial-gradient(circle at 88% 12%, rgba(110, 78, 45, 0.1), transparent 14%),
+                radial-gradient(circle at 18% 86%, rgba(95, 65, 32, 0.09), transparent 15%),
+                linear-gradient(118deg, transparent 0 79%, rgba(70,40,15,0.06) 86%, transparent 100%);
+        }
+
+        .template-thumb.style-family {
+            background-image:
+                radial-gradient(circle at center, transparent 18%, rgba(90, 60, 30, 0.22) 100%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.1' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.14'/%3E%3C/svg%3E");
+        }
+
+        .template-thumb.style-family .template-stamp {
+            left: 21%;
+            top: 1.1rem;
+            width: 3rem;
+            height: 3rem;
+            opacity: 0.58;
+            transform: rotate(-9deg);
+            border-color: rgba(92, 20, 20, 0.56);
+        }
+
+        .template-thumb.style-family .template-wave {
+            left: 35%;
+            top: 1.35rem;
+            width: 34%;
+            opacity: 0.28;
+        }
+
+        .template-thumb.style-family .template-aged::before {
+            background:
+                radial-gradient(circle at 7% 16%, rgba(88, 58, 28, 0.18), transparent 17%),
+                radial-gradient(circle at 92% 17%, rgba(88, 58, 28, 0.16), transparent 15%),
+                radial-gradient(circle at 16% 92%, rgba(88, 58, 28, 0.15), transparent 18%),
+                radial-gradient(circle at 86% 84%, rgba(88, 58, 28, 0.12), transparent 18%),
+                linear-gradient(110deg, transparent 0 74%, rgba(70,40,15,0.12) 82%, transparent 100%);
+        }
+
+        .template-thumb.style-romance {
+            background-image:
+                radial-gradient(circle at 18% 78%, rgba(180, 92, 120, 0.14), transparent 30%),
+                radial-gradient(circle at 78% 20%, rgba(180, 92, 120, 0.14), transparent 28%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+
+        .template-thumb.style-romance .template-stamp {
+            left: 25%;
+            top: 0.95rem;
+            width: 2.55rem;
+            height: 2.55rem;
+            opacity: 0.45;
+            transform: rotate(-20deg);
+            border-color: rgba(138, 38, 63, 0.45);
+        }
+
+        .template-thumb.style-romance .template-wave {
+            left: 32%;
+            top: 0.95rem;
+            width: 40%;
+            opacity: 0.36;
+            color: rgba(138, 38, 63, 0.7);
+        }
+
+        .template-thumb.style-romance .template-aged::before {
+            background:
+                radial-gradient(circle at 12% 18%, rgba(130, 78, 95, 0.1), transparent 17%),
+                radial-gradient(circle at 86% 18%, rgba(130, 78, 95, 0.08), transparent 15%),
+                radial-gradient(circle at 20% 88%, rgba(110, 68, 82, 0.08), transparent 18%),
+                linear-gradient(118deg, transparent 0 80%, rgba(100,55,70,0.07) 87%, transparent 100%);
+        }
+
+        .template-option.active {
+            border-color: #c12c26;
+            box-shadow: 0 12px 24px rgba(193,44,38,0.12);
+        }
+
+        .choice-chip.active {
+            background-color: #c12c26;
+            color: white;
+            border-color: #c12c26;
+        }
+
+        .letter-preview-paper {
+            min-height: 28rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 40px rgba(44,36,27,0.16), inset 0 0 30px rgba(0,0,0,0.08);
+        }
+
+        .letter-preview-columns {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 3rem;
+            column-gap: 0.7rem;
+            align-items: stretch;
+        }
+
+        .letter-preview-columns::before {
+            content: '';
+            position: absolute;
+            inset: 0.3rem 3.8rem 0.3rem 0.15rem;
+            background-image: repeating-linear-gradient(to left, rgba(140,115,85,0.12) 0 1px, transparent 1px 2.45rem);
+            opacity: 0.36;
+            pointer-events: none;
+        }
+
+        .letter-preview-scroll {
+            position: relative;
+            height: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.25rem 0.35rem 0.25rem 0.15rem;
+        }
+
+        .letter-preview-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .letter-preview-content {
+            position: relative;
+            z-index: 1;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            white-space: nowrap;
+            height: 100%;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 2.2rem;
+            align-items: flex-start;
+            padding: 0 1.1rem 0 0.5rem;
+        }
+
+        .letter-section {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            white-space: pre-wrap;
+            line-height: 1.95;
+            letter-spacing: 0.16em;
+            max-height: 100%;
+        }
+
+        .letter-salutation {
+            font-weight: 700;
+            padding-top: 0.2rem;
+        }
+
+        .letter-body {
+            max-width: 18em;
+        }
+
+        .letter-signoff {
+            align-self: flex-end;
+            margin-right: 1.4rem;
+            padding-bottom: 3.6rem;
+            opacity: 0.92;
+        }
+
+        .letter-preview-header {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 4.1rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            color: rgba(44, 36, 27, 0.62);
+            font-size: 0.8rem;
+            letter-spacing: 0.18em;
+            pointer-events: none;
+        }
+
+        .letter-preview-seal {
+            border: 1px solid rgba(44, 36, 27, 0.26);
+            padding: 0.18rem 0.45rem;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .letter-preview-to {
+            position: relative;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            letter-spacing: 0.12em;
+            color: rgba(44, 36, 27, 0.76);
+            border-left: 1px solid rgba(140,115,85,0.16);
+            padding-left: 0.45rem;
+            padding-top: 4.1rem;
+            padding-bottom: 1rem;
+            background: linear-gradient(to left, rgba(255,255,255,0.08), transparent 75%);
+            min-width: 2.6rem;
+        }
+
+        .detail-letter-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            height: 22rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            line-height: 2;
+            letter-spacing: 0.16em;
+            white-space: pre-wrap;
+            padding: 0.45rem 0.75rem 1.2rem 0.5rem;
+        }
+
+        .detail-letter-vertical::-webkit-scrollbar {
+            display: none;
+        }
+
+        .detail-letter-paper {
+            position: relative;
+            background-color: #f4ebd8;
+            border: 1px solid rgba(140,115,85,0.18);
+            box-shadow: 0 10px 24px rgba(44,36,27,0.08), inset 0 0 26px rgba(0,0,0,0.04);
+            padding: 1.25rem;
+            overflow: hidden;
+        }
+
+        .detail-letter-paper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.08' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+            opacity: 0.42;
+            pointer-events: none;
+        }
+
+        .detail-letter-paper::after {
+            content: '';
+            position: absolute;
+            inset: 1rem 1rem 1rem auto;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(140,115,85,0.18), transparent);
+            pointer-events: none;
+        }
+
+        .detail-letter-header {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            color: rgba(44,36,27,0.62);
+            margin-bottom: 0.75rem;
+        }
+
+        .detail-letter-seal {
+            border: 1px solid rgba(44,36,27,0.22);
+            padding: 0.15rem 0.45rem;
+            background: rgba(255,255,255,0.08);
+            font-size: 0.75rem;
+            letter-spacing: 0.16em;
+        }
+
+        .detail-letter-body-wrap {
+            position: relative;
+            z-index: 1;
+            height: 24rem;
+            padding-top: 0.25rem;
+            background-image: repeating-linear-gradient(to left, rgba(140,115,85,0.1) 0 1px, transparent 1px 2.45rem);
+            background-position: right top;
+            background-repeat: repeat;
+        }
+
+        .detail-letter-layout {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .detail-letter-content {
+            position: relative;
+            z-index: 1;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            white-space: nowrap;
+            height: 100%;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 1.15rem;
+            align-items: flex-start;
+            padding: 0.35rem 0.55rem 0.7rem 0.35rem;
+        }
+
+        .detail-letter-section {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            white-space: pre-wrap;
+            line-height: 2;
+            letter-spacing: 0.16em;
+            max-height: 100%;
+        }
+
+        .detail-letter-recipient {
+            font-weight: 700;
+            padding-top: 0.2rem;
+        }
+
+        .detail-letter-body {
+            max-width: 14em;
+        }
+
+        .detail-letter-signoff {
+            align-self: flex-end;
+            margin-right: 0.45rem;
+            padding-bottom: 1.4rem;
+            opacity: 0.92;
+        }
+
+
+        .page-back-btn {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.92);
+            font-size: 1rem;
+            line-height: 1;
+            border: none;
+            background: rgba(255,255,255,0.12);
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 9999px;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            z-index: 20;
+        }
+
+        .compose-field-input {
+            text-align: right;
+            outline: none;
+            background: transparent;
+            width: 50%;
+            color: #1f2937;
+            border: none;
+            box-shadow: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .compose-mode-toggle {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem;
+            background: #f8f3ea;
+            border: 1px solid #eadac1;
+            padding: 0.35rem;
+            border-radius: 9999px;
+        }
+
+        .compose-mode-btn {
+            border: none;
+            background: transparent;
+            color: #8c7355;
+            font-size: 0.875rem;
+            padding: 0.6rem 0.75rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .compose-mode-btn.active {
+            background: #c12c26;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(193,44,38,0.18);
+        }
+
+        .voice-panel {
+            background: linear-gradient(180deg, #faf6ef, #f5ecdd);
+            border: 1px solid #eadac1;
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .voice-orb {
+            position: relative;
+            width: 5.5rem;
+            height: 5.5rem;
+            margin: 0 auto 0.9rem;
+            border-radius: 9999px;
+            background: radial-gradient(circle at 35% 30%, #ef8e87, #c12c26 70%, #9f221d 100%);
+            box-shadow: 0 10px 24px rgba(193,44,38,0.22), inset 0 0 18px rgba(255,255,255,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .voice-orb::before,
+        .voice-orb::after {
+            content: '';
+            position: absolute;
+            inset: -0.55rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(193,44,38,0.22);
+            opacity: 0;
+            transform: scale(0.92);
+        }
+
+        .voice-panel.recording .voice-orb::before {
+            animation: voiceRipple 1.4s ease-out infinite;
+        }
+
+        .voice-panel.recording .voice-orb::after {
+            animation: voiceRipple 1.4s ease-out 0.45s infinite;
+        }
+
+        .voice-panel.recording .voice-orb {
+            animation: voicePulse 1.2s ease-in-out infinite;
+        }
+
+        .voice-status {
+            color: #5c4a3d;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-top: 0.35rem;
+        }
+
+        .voice-transcript {
+            margin-top: 0.85rem;
+            text-align: left;
+            background: rgba(255,255,255,0.52);
+            border: 1px dashed rgba(140,115,85,0.28);
+            border-radius: 0.75rem;
+            padding: 0.8rem 0.9rem;
+            color: #5c4a3d;
+            min-height: 4.8rem;
+        }
+
+        .voice-action-btn {
+            border: none;
+            border-radius: 9999px;
+            padding: 0.65rem 1.1rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .voice-action-btn.primary {
+            background: #c12c26;
+            color: #fff;
+        }
+
+        .voice-action-btn.secondary {
+            background: #ebe2d3;
+            color: #8c7355;
+        }
+
+        @keyframes voiceRipple {
+            0% { opacity: 0.5; transform: scale(0.92); }
+            100% { opacity: 0; transform: scale(1.38); }
+        }
+
+        @keyframes voicePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .text-panel.hidden,
+        .voice-panel.hidden {
+            display: none;
+        }
+
+        .letter-preview-columns::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cover-stage {
+            background:
+                radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 28%),
+                radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.55) 100%);
+        }
+
+        .cover-paper-frame {
+            position: relative;
+            border-radius: 0.4rem;
+            box-shadow: 0 26px 46px rgba(0,0,0,0.38);
+        }
+
+        .cover-paper-frame::before {
+            content: '';
+            position: absolute;
+            inset: -0.55rem;
+            border: 1px solid rgba(220, 181, 129, 0.18);
+            border-radius: 0.65rem;
+            pointer-events: none;
+        }
+
+        .cover-paper-frame::after {
+            content: '';
+            position: absolute;
+            inset: -1rem;
+            background: radial-gradient(circle at center, rgba(209,171,127,0.08), transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .cover-aged-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 10% 16%, rgba(90, 60, 30, 0.12), transparent 15%),
+                radial-gradient(circle at 88% 12%, rgba(90, 60, 30, 0.1), transparent 14%),
+                radial-gradient(circle at 14% 88%, rgba(90, 60, 30, 0.1), transparent 18%),
+                linear-gradient(120deg, transparent 0 79%, rgba(80,50,20,0.08) 86%, transparent 100%);
+            mix-blend-mode: multiply;
+            opacity: 0.7;
+        }
+
+        .style-default .cover-aged-layer {
+            background:
+                radial-gradient(circle at 10% 16%, rgba(90, 60, 30, 0.12), transparent 15%),
+                radial-gradient(circle at 88% 12%, rgba(90, 60, 30, 0.1), transparent 14%),
+                radial-gradient(circle at 14% 88%, rgba(90, 60, 30, 0.1), transparent 18%),
+                linear-gradient(120deg, transparent 0 79%, rgba(80,50,20,0.08) 86%, transparent 100%);
+        }
+
+        .style-family .cover-aged-layer {
+            background:
+                radial-gradient(circle at 8% 14%, rgba(78, 50, 22, 0.18), transparent 14%),
+                radial-gradient(circle at 92% 18%, rgba(78, 50, 22, 0.16), transparent 14%),
+                radial-gradient(circle at 16% 90%, rgba(78, 50, 22, 0.16), transparent 18%),
+                radial-gradient(circle at 84% 82%, rgba(78, 50, 22, 0.12), transparent 17%),
+                linear-gradient(112deg, transparent 0 74%, rgba(70,40,15,0.13) 82%, transparent 100%);
+            opacity: 0.82;
+        }
+
+        .style-romance .cover-aged-layer {
+            background:
+                radial-gradient(circle at 13% 18%, rgba(124, 72, 92, 0.1), transparent 15%),
+                radial-gradient(circle at 86% 14%, rgba(124, 72, 92, 0.08), transparent 14%),
+                radial-gradient(circle at 20% 88%, rgba(124, 72, 92, 0.08), transparent 18%),
+                linear-gradient(120deg, transparent 0 80%, rgba(92,54,66,0.08) 87%, transparent 100%);
+            opacity: 0.66;
+        }
+
+        .cover-fiber-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.08' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+            opacity: 0.42;
+            mix-blend-mode: multiply;
+        }
+
+        .cover-stamp {
+            position: absolute;
+            top: 11%;
+            left: 17%;
+            width: 8.5rem;
+            height: 8.5rem;
+            opacity: 0.28;
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+
+        .style-default .cover-stamp {
+            top: 11%;
+            left: 17%;
+            width: 8.5rem;
+            height: 8.5rem;
+            opacity: 0.28;
+        }
+
+        .style-family .cover-stamp {
+            top: 13%;
+            left: 14%;
+            width: 9.1rem;
+            height: 9.1rem;
+            opacity: 0.33;
+        }
+
+        .style-romance .cover-stamp {
+            top: 10%;
+            left: 18%;
+            width: 8.1rem;
+            height: 8.1rem;
+            opacity: 0.24;
+        }
+
+        .cover-title-badge {
+            position: absolute;
+            top: 1.4rem;
+            left: 1.35rem;
+            z-index: 10;
+            padding: 3px;
+            border: 2px solid rgba(30, 22, 16, 0.82);
+            background: rgba(242, 234, 222, 0.08);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
+        }
+
+        .cover-title-badge > div {
+            border: 1px solid rgba(30, 22, 16, 0.82);
+            padding: 0.25rem 0.55rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: rgba(26, 20, 14, 0.95);
+            letter-spacing: 0.25em;
+            line-height: 1;
+        }
+
+        .style-family .cover-title-badge {
+            transform: rotate(-1deg);
+        }
+
+        .style-romance .cover-title-badge {
+            border-color: rgba(76, 26, 38, 0.74);
+            background: rgba(255, 245, 247, 0.12);
+        }
+
+        .style-romance .cover-title-badge > div {
+            border-color: rgba(76, 26, 38, 0.74);
+            color: rgba(76, 26, 38, 0.92);
+        }
+
+        .cover-side-note {
+            background: rgba(255,255,255,0.08);
+            box-shadow: inset 0 0 0 1px rgba(40, 30, 20, 0.12);
+        }
+
+        .style-family .cover-side-note {
+            background: rgba(255,248,235,0.06);
+            box-shadow: inset 0 0 0 1px rgba(58, 38, 20, 0.16);
+        }
+
+        .style-romance .cover-side-note {
+            background: rgba(255,255,255,0.14);
+            box-shadow: inset 0 0 0 1px rgba(116, 52, 70, 0.14);
+        }
+
+        .cover-main-title {
+            text-shadow: 2px 3px 6px rgba(0,0,0,0.18);
+        }
+
+        .cover-main-title-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            line-height: 1;
+            font-size: 4.9rem;
+            font-family: 'STKaiti', 'KaiTi', 'Kaiti SC', 'FangSong', 'STSong', serif;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            transform: scaleX(0.92);
+            filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.14));
+        }
+
+        .cover-title-style-slender {
+            letter-spacing: 0.24em;
+            transform: rotate(-1deg) scaleX(0.9);
+        }
+
+        .cover-title-style-inscribed {
+            letter-spacing: 0.14em;
+            transform: rotate(0deg) scaleX(0.96);
+        }
+
+        .cover-title-style-handwritten {
+            letter-spacing: 0.16em;
+            transform: rotate(-1.4deg) scaleX(0.94);
+        }
+
+        .cover-title-ink-regular {
+            color: rgba(24, 16, 12, 0.86);
+            opacity: 0.92;
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.16);
+        }
+
+        .cover-title-ink-aged {
+            color: rgba(34, 20, 12, 0.8);
+            opacity: 0.86;
+            text-shadow: 1px 2px 5px rgba(0,0,0,0.22);
+        }
+
+        .cover-title-ink-soft {
+            color: rgba(42, 20, 24, 0.8);
+            opacity: 0.84;
+            text-shadow: 1px 2px 5px rgba(112, 42, 66, 0.14);
+        }
+
+        .style-family .cover-main-title {
+            letter-spacing: 0.24em;
+            text-shadow: 2px 3px 8px rgba(0,0,0,0.22);
+        }
+
+        .style-romance .cover-main-title {
+            color: rgba(32, 20, 22, 0.78);
+            text-shadow: 1px 2px 5px rgba(90, 35, 52, 0.16);
+        }
+
+        .cover-recipient {
+            text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+        }
+
+        .style-family .cover-recipient {
+            letter-spacing: 0.2em;
+        }
+
+        .style-romance .cover-recipient {
+            color: rgba(54, 32, 38, 0.92);
+        }
+
+        .cover-sheen {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(108deg, transparent 0 24%, rgba(255,255,255,0.08) 34%, transparent 46%, transparent 100%);
+            mix-blend-mode: screen;
+            opacity: 0.45;
+        }
+
+        .cover-drift {
+            animation: coverDrift 8s ease-in-out infinite alternate;
+            transform-origin: center center;
+        }
+
+        .cover-drift .cover-sheen {
+            animation: coverSheen 7.2s ease-in-out infinite alternate;
+        }
+
+        .cover-button-primary {
+            border-radius: 9999px;
+            color: #fff7ef;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .cover-button-outline {
+            border-radius: 9999px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            background: transparent;
+            border-width: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, background-color 0.18s ease;
+        }
+
+        .cover-button-primary::before,
+        .cover-button-outline::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(112deg, rgba(255,255,255,0.14), transparent 32%, transparent 68%, rgba(0,0,0,0.08)),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        .cover-button-primary:hover,
+        .cover-button-outline:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 13px 24px rgba(0,0,0,0.2);
+            filter: saturate(1.03);
+        }
+
+        .cover-button-primary:active,
+        .cover-button-outline:active {
+            transform: translateY(1px) scale(0.992);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.18), 0 6px 12px rgba(0,0,0,0.12);
+            filter: saturate(0.96) brightness(0.98);
+        }
+
+        .cover-btn-default {
+            background-color: #b92a24;
+            border-color: #d7a97d;
+            color: #f9ead7;
+        }
+
+        .cover-btn-default-outline {
+            border-color: #d7a97d;
+            color: #d7a97d;
+            background-color: rgba(215, 169, 125, 0.04);
+        }
+
+        .cover-btn-family {
+            background-color: #6d1d18;
+            border-color: #cfb089;
+            color: #f8ead8;
+        }
+
+        .cover-btn-family-outline {
+            border-color: #cfb089;
+            color: #cfb089;
+            background-color: rgba(207, 176, 137, 0.05);
+        }
+
+        .cover-btn-romance {
+            background-color: #8f2a44;
+            border-color: #efc6cf;
+            color: #fff2f5;
+        }
+
+        .cover-btn-romance-outline {
+            border-color: #efc6cf;
+            color: #efc6cf;
+            background-color: rgba(239, 198, 207, 0.06);
+        }
+
+        .style-default .red-banner {
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.1), transparent 15%, transparent 84%, rgba(0,0,0,0.12)),
+                repeating-linear-gradient(to bottom, rgba(255,255,255,0.06) 0 2px, rgba(0,0,0,0.03) 2px 7px, transparent 7px 18px),
+                radial-gradient(circle at 50% 12%, rgba(255,255,255,0.07), transparent 22%);
+            border-left: 1px solid rgba(255,245,230,0.15);
+            border-right: 1px solid rgba(60,20,12,0.22);
+        }
+
+        .style-family .red-banner {
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.06), transparent 12%, transparent 84%, rgba(0,0,0,0.18)),
+                linear-gradient(to bottom, rgba(50,18,16,0.14), transparent 18%, transparent 82%, rgba(25,10,9,0.16)),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+            box-shadow: inset 0 0 22px rgba(0,0,0,0.28);
+            border-left: 1px solid rgba(255,245,230,0.08);
+            border-right: 1px solid rgba(40,10,8,0.28);
+        }
+
+        .style-romance .red-banner {
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.12), transparent 18%, transparent 82%, rgba(0,0,0,0.1)),
+                radial-gradient(circle at 24% 20%, rgba(255,255,255,0.08), transparent 16%),
+                radial-gradient(circle at 78% 82%, rgba(255,255,255,0.05), transparent 18%),
+                repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 10px, rgba(120,35,60,0.08) 10px 20px);
+            border-left: 1px solid rgba(255,240,244,0.16);
+            border-right: 1px solid rgba(70,20,34,0.2);
+        }
+
+        #cover-paper .red-banner::before,
+        #cover-paper .red-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 8px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #cover-paper .red-banner::before {
+            left: -2px;
+            background:
+                linear-gradient(to right, rgba(255,255,255,0.12), rgba(255,255,255,0.04) 35%, transparent 100%),
+                radial-gradient(circle at left 12%, rgba(255,255,255,0.08), transparent 60%),
+                radial-gradient(circle at left 78%, rgba(255,255,255,0.06), transparent 62%);
+            transform: skewY(-1deg);
+        }
+
+        #cover-paper .red-banner::after {
+            right: -2px;
+            background:
+                linear-gradient(to left, rgba(35,10,8,0.2), rgba(35,10,8,0.08) 38%, transparent 100%),
+                radial-gradient(circle at right 20%, rgba(35,10,8,0.1), transparent 58%),
+                radial-gradient(circle at right 84%, rgba(35,10,8,0.08), transparent 60%);
+            transform: skewY(1deg);
+        }
+
+        .cover-animate {
+            animation: coverFadeIn 0.55s ease-out both;
+            transform-origin: center center;
+        }
+
+        .cover-animate .cover-paper-frame {
+            animation: coverPaperLift 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .cover-animate #cover-tip {
+            animation: coverTipFade 0.5s ease-out both;
+        }
+
+        .cover-animate .cover-stamp {
+            animation: coverStampReveal 0.72s ease-out both;
+        }
+
+        @keyframes coverFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes coverPaperLift {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.985);
+                filter: saturate(0.92);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: saturate(1);
+            }
+        }
+
+        @keyframes coverTipFade {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes coverStampReveal {
+            from {
+                opacity: 0;
+                transform: rotate(-8deg) scale(0.96);
+            }
+            to {
+                opacity: 0.28;
+                transform: rotate(0deg) scale(1);
+            }
+        }
+
+        @keyframes coverDrift {
+            from { transform: rotate(-0.35deg) translateY(0); }
+            to { transform: rotate(0.35deg) translateY(-2px); }
+        }
+
+        @keyframes coverSheen {
+            from { transform: translateX(-3%) skewX(-4deg); opacity: 0.26; }
+            to { transform: translateX(3%) skewX(-1deg); opacity: 0.42; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+
+    <!-- 全局提示 -->
+    <div id="toast" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/80 text-white px-6 py-3 rounded-lg z-[1000] opacity-0 pointer-events-none transition-opacity duration-300 text-center text-sm">提示信息</div>
+
+    <!-- 客服弹窗 -->
+    <div id="modal-service" class="modal-overlay">
+        <div class="bg-[#f2eade] border-2 border-[#8c7355] w-4/5 p-6 rounded shadow-2xl text-center">
+            <h3 class="text-xl font-bold mb-4">联络驿站</h3>
+            <p class="text-[#5c4a3d] text-sm leading-relaxed mb-6">
+                客官若遇疑难，请传书至：<br>
+                <span class="text-[#c12c26] font-bold block mt-2 text-lg select-all">support@mmeett.com</span>
+            </p>
+            <button class="bg-[#c12c26] text-white px-8 py-2 rounded-sm" onclick="closeModal('modal-service')">知晓了</button>
+        </div>
+    </div>
+
+    <!-- 1. 发侨批页：选择笺谱 -->
+    <div id="page-send" class="page active system-ui">
+        <div class="nav-header" style="font-family: 'KaiTi', serif;">写侨批</div>
+        <div class="p-4 space-y-4">
+            <div class="text-center pt-2 pb-1">
+                <p class="text-[#8c7355] text-xs tracking-[0.35em] mb-2">第一步</p>
+                <h2 class="text-2xl font-bold text-[#2c241b] tracking-[0.25em]" style="font-family: 'KaiTi', serif;">先择笺谱</h2>
+                <p class="text-sm text-[#8c7355] mt-2">点选一纸心意，即可落笔成书</p>
+            </div>
+
+            <div id="template-list" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <div id="page-send-compose" class="page system-ui">
+        <div class="nav-header flex items-center justify-center relative" style="font-family: 'KaiTi', serif;">
+            <button class="page-back-btn" onclick="navigateTo('page-send')">❮</button>
+            填写批意
+        </div>
+        <div class="p-4 space-y-4">
+            <div class="text-center pt-2 pb-1">
+                <p class="text-[#8c7355] text-xs tracking-[0.35em] mb-2">第二步</p>
+                <h2 class="text-2xl font-bold text-[#2c241b] tracking-[0.2em]" style="font-family: 'KaiTi', serif;">定人称与意象</h2>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 shadow-sm space-y-4">
+                <div class="flex justify-between border-b border-gray-100 pb-3">
+                    <span class="text-gray-500">寄件人</span>
+                    <input id="in-sender" type="text" class="compose-field-input font-bold" value="微信用户 (张三)">
+                </div>
+                <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                    <span class="text-gray-500">收信人</span>
+                    <input id="in-receiver" type="text" class="compose-field-input" placeholder="如: 淑柔" style="font-family: 'KaiTi', serif; font-size: 1.1rem;">
+                </div>
+
+                <div>
+                    <span class="text-gray-500 block mb-3">选择称呼</span>
+                    <div id="salutation-options" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <div>
+                    <span class="text-gray-500 block mb-3">想到你，我就想到了</span>
+                    <div id="imagery-options" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <div>
+                    <span class="text-gray-500 block mb-2">想说的话</span>
+                    <div class="compose-mode-toggle mb-3">
+                        <button id="mode-voice-btn" class="compose-mode-btn active" onclick="setComposeMode('voice')">语音输入</button>
+                        <button id="mode-text-btn" class="compose-mode-btn" onclick="setComposeMode('text')">文字输入</button>
+                    </div>
+                    <div id="voice-panel" class="voice-panel">
+                        <div class="voice-orb">🎤</div>
+                        <p class="text-[#2c241b] font-bold mb-2" style="font-family: 'KaiTi', serif;">轻触收音，慢慢说给家书听</p>
+                        <p id="voice-status" class="voice-status">按住说话，松开后为你整理成家书草稿。</p>
+                        <div id="voice-transcript" class="voice-transcript text-sm leading-relaxed">暂无转写内容，录完后会在这里显示。</div>
+                        <div class="flex justify-center gap-2 mt-3">
+                            <button id="voice-action-btn" class="voice-action-btn primary" onclick="toggleVoiceRecording()">按住说话</button>
+                            <button class="voice-action-btn secondary" onclick="setComposeMode('text')">切换文字整理</button>
+                        </div>
+                    </div>
+                    <div id="text-panel" class="text-panel hidden">
+                        <textarea id="in-msg" class="w-full bg-gray-50 rounded-lg p-3 outline-none h-32 text-[15px] leading-relaxed text-gray-800" placeholder="写下你想托付的话，也可只写几句关键词..." style="font-family: 'KaiTi', serif;"></textarea>
+                    </div>
+                    <div class="flex justify-between mt-2">
+                        <span class="text-xs text-[#8c7355] self-center">AI 将结合称呼与意象润成侨批</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="w-full bg-[#c12c26] text-white py-3.5 rounded-xl text-lg font-bold shadow-lg btn-active tracking-widest" onclick="generateLetter()" style="font-family: 'KaiTi', serif;">
+                生成侨批
+            </button>
+        </div>
+    </div>
+
+    <div id="page-send-preview" class="page system-ui" style="background-color: var(--paper-dark);">
+        <div class="nav-header flex items-center justify-center relative" style="font-family: 'KaiTi', serif;">
+            <button class="page-back-btn" onclick="navigateTo('page-send-compose')">❮</button>
+            预览批文
+        </div>
+        <div class="p-4 space-y-4">
+            <div class="text-center pt-2 pb-1">
+                <p class="text-[#8c7355] text-xs tracking-[0.35em] mb-2">第三步</p>
+                <h2 class="text-2xl font-bold text-[#2c241b] tracking-[0.2em]" style="font-family: 'KaiTi', serif;">纵书成笺</h2>
+            </div>
+
+            <div id="preview-paper" class="letter-preview-paper qiaopi-paper style-default p-5 relative overflow-hidden">
+                <div class="letter-preview-header" style="font-family: 'KaiTi', serif;">
+                    <div class="letter-preview-seal">银信批笺</div>
+                </div>
+                <div class="letter-preview-columns text-[22px] text-[#2c241b] pt-14 pb-4 px-2" style="font-family: 'KaiTi', serif;">
+                    <div class="letter-preview-scroll">
+                        <div id="preview-letter" class="letter-preview-content">
+                            <div id="preview-salutation" class="letter-section letter-salutation">某某亲启：</div>
+                            <div id="preview-body" class="letter-section letter-body">见字如面</div>
+                            <div id="preview-signoff" class="letter-section letter-signoff">此复\n张三谨书</div>
+                        </div>
+                    </div>
+                    <div id="preview-meta-to" class="letter-preview-to" style="font-family: 'KaiTi', serif;">致 吾妻</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button class="w-full border border-[#b22222] text-[#b22222] py-3.5 rounded-xl tracking-widest text-lg btn-active" onclick="navigateTo('page-send-compose')" style="font-family: 'KaiTi', serif;">返回修改</button>
+                <button class="w-full bg-[#b22222] text-white py-3.5 rounded-xl tracking-widest text-lg shadow-md btn-active" onclick="goToAmount()" style="font-family: 'KaiTi', serif;">存入批金</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-send-amount" class="page system-ui">
+        <div class="nav-header flex items-center justify-center relative" style="font-family: 'KaiTi', serif;">
+            <button class="page-back-btn" onclick="navigateTo('page-send-preview')">❮</button>
+            存入批金
+        </div>
+        <div class="p-4 space-y-4">
+            <div class="text-center pt-2 pb-1">
+                <p class="text-[#8c7355] text-xs tracking-[0.35em] mb-2">第四步</p>
+                <h2 class="text-2xl font-bold text-[#2c241b] tracking-[0.2em]" style="font-family: 'KaiTi', serif;">付银寄出</h2>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 shadow-sm space-y-4">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                    <span class="text-gray-500">当前笺谱</span>
+                    <span id="amount-template-name" class="font-bold text-[#2c241b]" style="font-family: 'KaiTi', serif;">侨批情书</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                    <span class="text-gray-500">收信人</span>
+                    <span id="amount-receiver" class="font-bold text-[#2c241b]" style="font-family: 'KaiTi', serif;">淑柔吾妻</span>
+                </div>
+                <div class="border-b border-gray-100 pb-3">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-gray-500">批金 (红包金额)</span>
+                        <span class="text-xs text-gray-400">上限 200 元</span>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <span class="mr-1 text-xl">¥</span>
+                        <input id="in-amount" type="number" class="text-right outline-none text-2xl font-bold text-[#c12c26] w-full" placeholder="0.00" oninput="calcFee()">
+                    </div>
+                    <div id="fee-box" class="text-right text-[10px] text-gray-400 mt-1 hidden">
+                        收 1% 汇费: <span id="fee-val" class="text-[#c12c26]">0.00</span> 元
+                        <span class="inline-block border border-gray-300 rounded-full w-3 h-3 text-center leading-3 ml-1 cursor-pointer" onclick="showToast('手续费用于平台维护与钱庄通道')">i</span>
+                    </div>
+                </div>
+                <div class="rounded-lg bg-[#f8f3ea] border border-[#eadac1] p-3 text-sm text-[#8c7355] leading-relaxed">
+                    批文已封存，支付后将沿用你方才选定的笺谱、称呼与正文样式寄出。
+                </div>
+            </div>
+
+            <button class="w-full bg-[#c12c26] text-white py-3.5 rounded-xl text-lg font-bold shadow-lg btn-active tracking-widest" onclick="doPay()" style="font-family: 'KaiTi', serif;">
+                支付并寄出
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. 收信列表页 -->
+    <div id="page-list" class="page" style="background-color: var(--paper-dark);">
+        <div class="nav-header">收信箱</div>
+        <div id="list-container" class="p-4 space-y-3">
+            <!-- 动态渲染 -->
+        </div>
+    </div>
+
+    <!-- 3. 侨批封面 (高度还原) -->
+    <div id="page-cover" class="page bg-black flex flex-col items-center justify-center cover-stage">
+        <button class="page-back-btn" onclick="goBackFromCover()">❮</button>
+        <p id="cover-tip" class="text-[#dcb581] text-xs mb-6 tracking-widest">封缄完毕，寄往乡里</p>
+
+        <div class="cover-paper-frame cover-drift w-[85%]">
+            <div id="cover-paper" class="qiaopi-paper style-default w-full h-[580px] flex justify-between p-6 overflow-hidden">
+                <div class="cover-aged-layer"></div>
+                <div class="cover-fiber-layer"></div>
+                <div class="cover-sheen"></div>
+
+                <svg id="cover-stamp" class="cover-stamp" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+
+                <div class="cover-title-badge">
+                    <div id="cover-badge-text" style="font-family: 'KaiTi', serif;">银信</div>
+                </div>
+
+                <div class="w-[27%] flex justify-end relative z-10">
+                    <div id="cv-first" class="vertical-text cover-side-note text-[1.65rem] text-[#2c241b] font-bold mt-14 p-3 border border-black/10 rounded-sm max-h-[24rem] overflow-hidden" style="font-family: 'KaiTi', serif;">
+                        尚祈珍重 不尽依依
+                    </div>
+                </div>
+
+                <div class="red-banner w-[34%] h-full bg-[#c12c26] shadow-inner flex items-center justify-center relative z-10">
+                    <div id="cover-main-title" class="cover-main-title w-full h-full flex items-center justify-center px-2"></div>
+                </div>
+
+                <div class="w-[27%] flex items-end pb-10 relative z-10">
+                    <div id="cv-to" class="vertical-text cover-recipient text-[2rem] text-gray-900 font-bold tracking-[0.25em]">淑柔吾妻 亲启</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cover-btns" class="mt-8 w-[85%] flex gap-4">
+            <!-- 动态显示 -->
+        </div>
+    </div>
+
+    <!-- 4. 展信内容页 -->
+    <div id="page-detail" class="page">
+        <div class="bg-[#c12c26] h-24 w-full relative">
+            <button class="page-back-btn" onclick="navigateTo('page-list')">❮</button>
+            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-16 h-16 bg-white rounded-full p-1 shadow-lg">
+                <div class="w-full h-full bg-[#c12c26] rounded-full flex items-center justify-center text-white font-bold text-2xl">批</div>
+            </div>
+        </div>
+        <div class="p-8 text-center mt-6">
+            <p id="dt-from" class="text-gray-500 text-sm">来自 张三 的侨批</p>
+            <div class="text-4xl font-bold text-[#c12c26] mt-4 mb-2">¥ <span id="dt-amount">0.00</span></div>
+            <p class="text-xs text-orange-600 bg-orange-50 inline-block px-3 py-1 rounded-full">批金已存入您的余额</p>
+        </div>
+        <div class="px-8 pb-10">
+            <div class="border-t border-dashed border-[#8c7355]/30 my-6"></div>
+            <div class="detail-letter-paper rounded-sm">
+                <div class="detail-letter-header" style="font-family: 'KaiTi', serif;">
+                    <div class="detail-letter-seal">银信家书</div>
+                </div>
+                <div class="detail-letter-body-wrap">
+                    <div class="detail-letter-layout text-lg text-[#2c241b] font-serif" style="font-family: 'KaiTi', serif;">
+                        <div id="dt-msg" class="detail-letter-vertical whitespace-pre-wrap">
+                            <div id="dt-recipient" class="detail-letter-section detail-letter-recipient">某某亲启：</div>
+                            <div id="dt-body" class="detail-letter-section detail-letter-body">见字如面...</div>
+                            <div id="dt-signoff" class="detail-letter-section detail-letter-signoff">此复\n某某谨书</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 space-y-4">
+                <button class="w-full bg-[#c12c26] text-white py-3 rounded-full btn-active" onclick="navigateTo('page-withdraw')">去提现</button>
+                <button class="w-full border border-[#c12c26] text-[#c12c26] py-3 rounded-full btn-active" onclick="navigateTo('page-send')">我也要发一封</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 我的页面 -->
+    <div id="page-mine" class="page">
+        <div class="bg-[#c12c26] pt-12 pb-20 px-6 rounded-b-[40px]">
+            <div class="flex items-center space-x-4">
+                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center border-2 border-white/30">
+                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
+                </div>
+                <div class="text-white">
+                    <h2 class="text-xl font-bold tracking-widest">微信用户 (张三)</h2>
+                    <p class="text-xs opacity-70 mt-1">侨批文化传承者</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-5 -mt-12">
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <p class="text-xs text-gray-400 mb-1">我的余额 (元)</p>
+                <div class="flex justify-between items-end">
+                    <h3 id="my-balance" class="text-3xl font-bold text-gray-800">520.00</h3>
+                    <button class="bg-[#c12c26] text-white px-6 py-1.5 rounded-full text-sm font-bold btn-active" onclick="navigateTo('page-withdraw')">提现</button>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mt-4">
+                <div class="flex-1 bg-white p-4 rounded-xl shadow-sm text-center">
+                    <p class="text-[10px] text-gray-400">已发侨批</p>
+                    <p class="font-bold text-[#c12c26]">¥ 1,200.00</p>
+                </div>
+                <div class="flex-1 bg-white p-4 rounded-xl shadow-sm text-center">
+                    <p class="text-[10px] text-gray-400">收到侨批</p>
+                    <p class="font-bold text-green-700">¥ 1,720.00</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm mt-4 overflow-hidden divide-y divide-gray-50">
+                <div class="p-4 flex justify-between items-center active:bg-gray-50" onclick="navigateTo('page-q-ledger')">
+                    <span class="text-sm">侨批簿册</span>
+                    <span class="text-gray-300">›</span>
+                </div>
+                <div class="p-4 flex justify-between items-center active:bg-gray-50" onclick="navigateTo('page-w-ledger')">
+                    <span class="text-sm">账目</span>
+                    <span class="text-gray-300">›</span>
+                </div>
+                <div class="p-4 flex justify-between items-center active:bg-gray-50" onclick="navigateTo('page-history')">
+                    <span class="text-sm">侨批历史</span>
+                    <span class="text-gray-300">›</span>
+                </div>
+                <div class="p-4 flex justify-between items-center active:bg-gray-50" onclick="showModal('modal-service')">
+                    <span class="text-sm">联络驿站</span>
+                    <span class="text-gray-300">›</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. 提现页 -->
+    <div id="page-withdraw" class="page bg-gray-50">
+        <div class="bg-white p-4 flex items-center border-b relative justify-center">
+            <button class="page-back-btn" style="color:#5c4a3d;background:rgba(140,115,85,0.08);" onclick="navigateTo('page-mine')">❮</button>
+            <span class="font-bold">提取现银</span>
+        </div>
+        <div class="p-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm mb-6">
+                <p class="text-sm text-gray-500 mb-4">提现金额</p>
+                <div class="flex items-center border-b border-gray-100 pb-2 text-3xl font-bold">
+                    <span class="mr-2">¥</span>
+                    <input id="w-in-amount" type="number" class="w-full outline-none" placeholder="0.00">
+                </div>
+                <p class="text-xs text-gray-400 mt-3 flex justify-between">
+                    <span>当前余额：520.00 元</span>
+                    <span class="text-[#c12c26]" onclick="document.getElementById('w-in-amount').value=520">全部提取</span>
+                </p>
+            </div>
+            <div class="flex items-center space-x-2 mb-8 px-2">
+                <input type="checkbox" id="w-check" class="w-4 h-4 accent-[#c12c26]">
+                <label for="w-check" class="text-xs text-gray-500">本人已完成微信实名认证并知晓规则</label>
+            </div>
+            <button class="w-full bg-[#c12c26] text-white py-4 rounded-xl font-bold shadow-lg btn-active" onclick="submitWithdraw()">确认提取</button>
+            <p class="text-[10px] text-gray-400 mt-6 text-center leading-relaxed">
+                * 单人单日限额 2000 元 | 钱庄日拨付上限 50,000 元<br>预计 2 小时内拨付至零钱
+            </p>
+        </div>
+    </div>
+
+    <!-- 7. 流水页 (侨批) -->
+    <div id="page-q-ledger" class="page bg-gray-50">
+        <div class="bg-white p-4 flex items-center border-b relative justify-center">
+            <button class="page-back-btn" style="color:#5c4a3d;background:rgba(140,115,85,0.08);" onclick="navigateTo('page-mine')">❮</button>
+            <span class="font-bold">侨批簿册</span>
+        </div>
+        <div class="p-4 space-y-2">
+            <div class="bg-white p-4 rounded flex justify-between items-center shadow-sm">
+                <div><p class="font-bold">致 淑柔吾妻</p><p class="text-[10px] text-gray-400">03-15 14:20</p></div>
+                <p class="font-serif font-bold text-[#c12c26]">- 13.14</p>
+            </div>
+            <div class="bg-white p-4 rounded flex justify-between items-center shadow-sm">
+                <div><p class="font-bold">来自 远方亲友</p><p class="text-[10px] text-gray-400">03-14 09:10</p></div>
+                <p class="font-serif font-bold text-green-700">+ 100.00</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. 流水页 (提现) -->
+    <div id="page-w-ledger" class="page bg-gray-50">
+        <div class="bg-white p-4 flex items-center border-b relative justify-center">
+            <button class="page-back-btn" style="color:#5c4a3d;background:rgba(140,115,85,0.08);" onclick="navigateTo('page-mine')">❮</button>
+            <span class="font-bold">钱庄账目</span>
+        </div>
+        <div class="p-4 space-y-2">
+            <div class="bg-white p-4 rounded flex justify-between items-center shadow-sm">
+                <div><p class="font-bold">提取现银</p><p class="text-[10px] text-gray-400">03-15 16:00</p></div>
+                <div class="text-right"><p class="font-bold">- 50.00</p><p class="text-[10px] text-orange-600">拨付中</p></div>
+            </div>
+            <div class="bg-white p-4 rounded flex justify-between items-center shadow-sm">
+                <div><p class="font-bold">提取现银</p><p class="text-[10px] text-gray-400">03-10 11:00</p></div>
+                <div class="text-right"><p class="font-bold">- 200.00</p><p class="text-[10px] text-green-700">已结清</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. 历史页 -->
+    <div id="page-history" class="page">
+        <div class="bg-white p-4 flex items-center border-b sticky top-0 z-10 relative justify-center">
+            <button class="page-back-btn" style="color:#5c4a3d;background:rgba(140,115,85,0.08);" onclick="navigateTo('page-mine')">❮</button>
+            <span class="font-bold tracking-widest">侨批历史</span>
+        </div>
+        <div class="p-6 leading-relaxed font-serif text-[#5c4a3d]">
+            <h2 class="text-xl font-bold text-[#c12c26] mb-4 text-center">何为侨批？</h2>
+            <p class="mb-4 indent-8">“批”乃闽粤一带对书信之俗称。侨批（银信），是早年海外华侨寄交国内乡亲的汇款与家书合一的载体。2013年，《侨批档案》被列入《世界记忆名录》。</p>
+            <div class="h-px bg-gray-200 my-6"></div>
+            <h2 class="text-xl font-bold text-[#c12c26] mb-4 text-center">规矩</h2>
+            <ul class="space-y-3 text-sm">
+                <li>● 单封汇水上限 200 元</li>
+                <li>● 平台收取 1% 作为驿站运作费</li>
+                <li>● 提现需实名认证</li>
+                <li>● 单人单日提现上限 2000 元</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 底部 Tab Bar -->
+    <div id="tab-bar" class="absolute bottom-0 left-0 w-full h-16 bg-white border-t flex z-50">
+        <div id="tab-send" class="flex-1 flex flex-col items-center justify-center text-[#c12c26]" onclick="navigateTo('page-send')">
+            <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            <span class="text-[10px]">发侨批</span>
+        </div>
+        <div id="tab-list" class="flex-1 flex flex-col items-center justify-center text-gray-400" onclick="navigateTo('page-list')">
+            <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            <span class="text-[10px]">收信箱</span>
+        </div>
+        <div id="tab-mine" class="flex-1 flex flex-col items-center justify-center text-gray-400" onclick="navigateTo('page-mine')">
+            <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <span class="text-[10px]">我的</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    let state = {
+        currentTemplateIdx: 0,
+        templates: [
+            {
+                id: 'style-default',
+                name: '侨批情书',
+                desc: '柔情寄远，宜写两地相思',
+                accent: '#c22929',
+                mark: '两地平安',
+                coverBadge: '银信',
+                coverNoteClass: 'rounded-sm',
+                coverTip: '封缄成笺，寄与相思之人',
+                coverSendLabel: '托付相思 (转发)',
+                coverReceiveLabel: '启封情书',
+                coverBtnClass: 'cover-btn-default',
+                coverBtnOutlineClass: 'cover-btn-default-outline',
+                coverTitleClass: 'cover-title-ink-regular',
+                coverTitleStyleClass: 'cover-title-style-slender',
+                stampText: '暹罗\n侨信',
+                waveSvg: '<path d="M3 9C18 2 33 2 48 9C63 16 78 16 93 9C102 5 110 5 117 8" stroke="currentColor" stroke-width="1.8"/><path d="M3 18C18 11 33 11 48 18C63 25 78 25 93 18C102 14 110 14 117 17" stroke="currentColor" stroke-width="1.8"/><path d="M3 27C18 20 33 20 48 27C63 34 78 34 93 27C102 23 110 23 117 26" stroke="currentColor" stroke-width="1.8"/>',
+                coverStampSvg: '<circle cx="46" cy="58" r="34" stroke="#8f1f1f" stroke-width="2" stroke-dasharray="4 3"/><circle cx="46" cy="58" r="24" stroke="#8f1f1f" stroke-width="1.2"/><path d="M72 22C102 10 126 16 146 28C164 38 180 38 194 30" stroke="#8f1f1f" stroke-width="3"/><path d="M72 42C102 30 126 36 146 48C164 58 180 58 194 50" stroke="#8f1f1f" stroke-width="3"/><path d="M72 62C102 50 126 56 146 68C164 78 180 78 194 70" stroke="#8f1f1f" stroke-width="3"/><path d="M72 82C102 70 126 76 146 88C164 98 180 98 194 90" stroke="#8f1f1f" stroke-width="3"/>'
+            },
+            {
+                id: 'style-family',
+                name: '长辈问安',
+                desc: '纸色温厚，宜寄家中问候',
+                accent: '#571616',
+                mark: '家山无恙',
+                coverBadge: '家书',
+                coverNoteClass: 'rounded-[2px]',
+                coverTip: '封缄已定，寄回家山灯火处',
+                coverSendLabel: '托付家山 (转发)',
+                coverReceiveLabel: '启封家书',
+                coverBtnClass: 'cover-btn-family',
+                coverBtnOutlineClass: 'cover-btn-family-outline',
+                coverTitleClass: 'cover-title-ink-aged',
+                coverTitleStyleClass: 'cover-title-style-inscribed',
+                stampText: '南洋\n家批',
+                waveSvg: '<path d="M4 12C17 4 28 4 40 12C52 20 64 20 76 12C88 4 100 4 114 12" stroke="currentColor" stroke-width="2.1"/><path d="M4 23C17 15 28 15 40 23C52 31 64 31 76 23C88 15 100 15 114 23" stroke="currentColor" stroke-width="2.1"/>',
+                coverStampSvg: '<circle cx="48" cy="58" r="36" stroke="#6f1a16" stroke-width="2.2" stroke-dasharray="3.5 3"/><circle cx="48" cy="58" r="25" stroke="#6f1a16" stroke-width="1.2"/><path d="M77 28C105 20 126 20 147 30C166 39 181 39 194 33" stroke="#6f1a16" stroke-width="3.2"/><path d="M77 50C105 42 126 42 147 52C166 61 181 61 194 55" stroke="#6f1a16" stroke-width="3.2"/><path d="M77 72C105 64 126 64 147 74C166 83 181 83 194 77" stroke="#6f1a16" stroke-width="3.2"/>'
+            },
+            {
+                id: 'style-romance',
+                name: '亲友通问',
+                desc: '轻雅温润，宜叙亲友近况',
+                accent: '#a83250',
+                mark: '音讯相通',
+                coverBadge: '花笺',
+                coverNoteClass: 'rounded-md',
+                coverTip: '花笺封就，遥寄故人案前',
+                coverSendLabel: '托付故人 (转发)',
+                coverReceiveLabel: '启封花笺',
+                coverBtnClass: 'cover-btn-romance',
+                coverBtnOutlineClass: 'cover-btn-romance-outline',
+                coverTitleClass: 'cover-title-ink-soft',
+                coverTitleStyleClass: 'cover-title-style-handwritten',
+                stampText: '月下\n通音',
+                waveSvg: '<path d="M4 8C15 4 27 6 38 12C49 18 61 20 74 15C85 11 96 9 116 14" stroke="currentColor" stroke-width="1.7"/><path d="M4 18C15 14 27 16 38 22C49 28 61 30 74 25C85 21 96 19 116 24" stroke="currentColor" stroke-width="1.7"/><path d="M18 31C32 26 44 28 56 33C68 38 82 38 101 31" stroke="currentColor" stroke-width="1.5"/>',
+                coverStampSvg: '<circle cx="45" cy="56" r="32" stroke="#8f2a44" stroke-width="1.8" stroke-dasharray="3 3"/><circle cx="45" cy="56" r="22" stroke="#8f2a44" stroke-width="1"/><path d="M72 20C98 16 119 21 139 33C156 42 174 43 194 36" stroke="#8f2a44" stroke-width="2.6"/><path d="M72 39C98 35 119 40 139 52C156 61 174 62 194 55" stroke="#8f2a44" stroke-width="2.6"/><path d="M72 58C98 54 119 59 139 71C156 80 174 81 194 74" stroke="#8f2a44" stroke-width="2.6"/><path d="M72 77C98 73 119 78 139 90C156 99 174 100 194 93" stroke="#8f2a44" stroke-width="2.6"/>'
+            }
+        ],
+        salutations: ['吾妻', '吾夫', '吾爱', '吾友', '吾亲'],
+        imageryOptions: ['橄榄', '月娘', '潮汕圣杯', '红豆', '煮茶', '木棉花'],
+        draft: {
+            sender: '微信用户 (张三)',
+            receiver: '',
+            salutation: '吾妻',
+            imagery: '红豆',
+            inputMode: 'voice',
+            voiceTranscript: '',
+            isRecording: false,
+            message: '',
+            generatedMessage: '',
+            amount: ''
+        },
+        mails: [
+            { id: 101, sender: '远方叔伯', amount: '100.00', msg: '见字如面。虽身在他乡，心系故里。此金供家用。', date: '昨天', isOpened: false, style: 'style-family' },
+            { id: 102, sender: '商行掌柜', amount: '200.00', msg: '生意兴隆，按时拨付。祈珍重。', date: '2天前', isOpened: true, style: 'style-default' },
+            { id: 103, sender: '淑柔', amount: '13.14', msg: '愿君安好，早日归乡。', date: '5天前', isOpened: false, style: 'style-romance' }
+        ],
+        lastMainPage: 'page-send'
+    };
+
+    function navigateTo(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+
+        const tabBar = document.getElementById('tab-bar');
+        const mainPages = ['page-send', 'page-list', 'page-mine'];
+        tabBar.style.display = mainPages.includes(pageId) ? 'flex' : 'none';
+
+        if (mainPages.includes(pageId)) {
+            state.lastMainPage = pageId;
+            updateTabStyle(pageId);
+        }
+
+        if (pageId === 'page-list') renderList();
+    }
+
+    function updateTabStyle(pageId) {
+        const tabs = ['tab-send', 'tab-list', 'tab-mine'];
+        tabs.forEach(t => {
+            const el = document.getElementById(t);
+            if (t === 'tab-' + pageId.split('-')[1]) {
+                el.classList.add('text-[#c12c26]');
+                el.classList.remove('text-gray-400');
+                el.querySelector('span').classList.add('font-bold');
+            } else {
+                el.classList.remove('text-[#c12c26]');
+                el.classList.add('text-gray-400');
+                el.querySelector('span').classList.remove('font-bold');
+            }
+        });
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.opacity = '1';
+        setTimeout(() => t.style.opacity = '0', 2000);
+    }
+
+    function showModal(id) { document.getElementById(id).classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    function renderTemplateList() {
+        const container = document.getElementById('template-list');
+        container.innerHTML = state.templates.map((tmpl, idx) => `
+            <button class="template-option ${idx === state.currentTemplateIdx ? 'active' : ''} w-full bg-white/80 border rounded-2xl p-3 text-left btn-active" onclick="selectTemplate(${idx})">
+                <div class="template-thumb qiaopi-paper ${tmpl.id}">
+                    <div class="template-aged"></div>
+                    <div class="template-crease"></div>
+                    <div class="template-thumb-band red-banner" style="background-color:${tmpl.accent}"></div>
+                    <div class="template-label">
+                        <div class="template-label-inner" style="font-family: 'KaiTi', serif;">银信</div>
+                    </div>
+                    <div class="template-stamp"><div class="template-stamp-text">${tmpl.stampText}</div></div>
+                    <svg class="template-wave" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${tmpl.waveSvg}</svg>
+                    <div class="template-address" style="font-family: 'KaiTi', serif;">${tmpl.mark}</div>
+                    <div class="absolute inset-y-0 left-[39%] w-[22%] flex items-center justify-center z-[2]">
+                        <div class="vertical-text text-[1.9rem] font-black tracking-[0.25em] text-[#1a1410]/90" style="font-family: 'KaiTi', serif;">侨批</div>
+                    </div>
+                    <div class="template-title" style="font-family: 'KaiTi', serif;">${tmpl.name}</div>
+                    <div class="template-corner-shadow"></div>
+                </div>
+                <div class="flex items-start justify-between mt-3 gap-3">
+                    <div>
+                        <div class="font-bold text-[#2c241b] text-base tracking-widest" style="font-family: 'KaiTi', serif;">${tmpl.name}</div>
+                        <div class="text-sm text-[#8c7355] mt-1">${tmpl.desc}</div>
+                    </div>
+                    <span class="text-xs px-2 py-1 rounded-full ${idx === state.currentTemplateIdx ? 'bg-red-50 text-[#c12c26]' : 'bg-gray-100 text-[#8c7355]'}">${idx === state.currentTemplateIdx ? '已选' : '可选'}</span>
+                </div>
+            </button>
+        `).join('');
+    }
+
+    function selectTemplate(idx) {
+        state.currentTemplateIdx = idx;
+        renderTemplateList();
+        showToast('已选笺谱：' + state.templates[idx].name);
+        setTimeout(() => {
+            syncComposeInputs();
+            navigateTo('page-send-compose');
+        }, 180);
+    }
+
+    function renderChoiceChips(containerId, options, activeValue, key) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = options.map(option => `
+            <button class="choice-chip ${option === activeValue ? 'active' : ''} border border-[#d8c7af] bg-[#faf6ef] text-[#5c4a3d] px-4 py-2 rounded-full text-sm btn-active" onclick="setDraftField('${key}', '${option}')">${option}</button>
+        `).join('');
+    }
+
+    function setDraftField(key, value) {
+        state.draft[key] = value;
+        if (key === 'salutation') renderChoiceChips('salutation-options', state.salutations, state.draft.salutation, 'salutation');
+        if (key === 'imagery') renderChoiceChips('imagery-options', state.imageryOptions, state.draft.imagery, 'imagery');
+    }
+
+    function setComposeMode(mode) {
+        state.draft.inputMode = mode;
+        document.getElementById('mode-voice-btn').classList.toggle('active', mode === 'voice');
+        document.getElementById('mode-text-btn').classList.toggle('active', mode === 'text');
+        document.getElementById('voice-panel').classList.toggle('hidden', mode !== 'voice');
+        document.getElementById('text-panel').classList.toggle('hidden', mode !== 'text');
+        if (mode === 'text' && state.draft.voiceTranscript && !document.getElementById('in-msg').value.trim()) {
+            document.getElementById('in-msg').value = state.draft.voiceTranscript;
+            state.draft.message = state.draft.voiceTranscript;
+        }
+    }
+
+    function renderVoicePanel() {
+        const panel = document.getElementById('voice-panel');
+        const actionBtn = document.getElementById('voice-action-btn');
+        const status = document.getElementById('voice-status');
+        const transcript = document.getElementById('voice-transcript');
+        if (!panel || !actionBtn || !status || !transcript) return;
+
+        panel.classList.toggle('recording', !!state.draft.isRecording);
+        actionBtn.innerText = state.draft.isRecording ? '结束转写' : '按住说话';
+        status.innerText = state.draft.isRecording
+            ? '正在收音中……松开后将这段心事整理成文字。'
+            : '按住说话，松开后为你整理成家书草稿。';
+        transcript.innerText = state.draft.voiceTranscript || '暂无转写内容，录完后会在这里显示。';
+    }
+
+    function toggleVoiceRecording() {
+        state.draft.isRecording = !state.draft.isRecording;
+        if (!state.draft.isRecording) {
+            state.draft.voiceTranscript = '方才对着话筒说了许多心事，只盼你展信时，能知我一路平安，也知我日夜思念未曾稍减。';
+            document.getElementById('in-msg').value = state.draft.voiceTranscript;
+            state.draft.message = state.draft.voiceTranscript;
+            showToast('语音已整理成文字');
+        } else {
+            showToast('正在收音中...');
+        }
+        renderVoicePanel();
+    }
+
+    function syncComposeInputs() {
+        document.getElementById('in-sender').value = state.draft.sender;
+        document.getElementById('in-receiver').value = state.draft.receiver;
+        document.getElementById('in-msg').value = state.draft.message;
+        renderChoiceChips('salutation-options', state.salutations, state.draft.salutation, 'salutation');
+        renderChoiceChips('imagery-options', state.imageryOptions, state.draft.imagery, 'imagery');
+        setComposeMode(state.draft.inputMode || 'voice');
+        renderVoicePanel();
+    }
+
+    function calcFee() {
+        let val = parseFloat(document.getElementById('in-amount').value);
+        const box = document.getElementById('fee-box');
+        if (isNaN(val) || val <= 0) {
+            box.classList.add('hidden');
+            state.draft.amount = '';
+            return;
+        }
+        if (val > 200) {
+            val = 200;
+            document.getElementById('in-amount').value = 200;
+            showToast('单次最高 200 元');
+        }
+        box.classList.remove('hidden');
+        document.getElementById('fee-val').innerText = (val * 0.01).toFixed(2);
+        state.draft.amount = document.getElementById('in-amount').value;
+    }
+
+    function generateLetter() {
+        const sender = document.getElementById('in-sender').value.trim() || '微信用户 (张三)';
+        const receiver = document.getElementById('in-receiver').value.trim();
+        const typedMessage = document.getElementById('in-msg').value.trim();
+        const message = state.draft.inputMode === 'voice'
+            ? (typedMessage || '方才对着话筒说了许多心事，唯恐纸短情长，难尽胸中牵挂。')
+            : typedMessage;
+
+        if (!receiver) return showToast('请先填写收信人');
+        if (!message) return showToast('请先写下想说的话');
+
+        state.draft.sender = sender;
+        state.draft.receiver = receiver;
+        state.draft.message = message;
+
+        const openingMap = {
+            '吾妻': '见字如晤，灯下展笺，如对卿面。',
+            '吾夫': '见字安好，念君行役，未敢少忘。',
+            '吾爱': '尺素轻开，满纸皆是相忆。',
+            '吾友': '久别以来，常忆旧谈，今托银信问安。',
+            '吾亲': '家山在望，念及亲颜，不觉提笔。'
+        };
+        const imageryMap = {
+            '橄榄': '愿此心意如橄榄回甘，初入口微涩，后味却长。',
+            '月娘': '今夜月娘应照两地，也照见我这份难言的牵挂。',
+            '潮汕圣杯': '借圣杯一掷，愿天意指向平安顺遂。',
+            '红豆': '红豆最能寄思，字里行间皆是相念。',
+            '煮茶': '他日若得重聚，当与君围炉煮茶，再叙此时。',
+            '木棉花': '愿木棉花开时，亦是你我消息平宁之日。'
+        };
+
+        state.draft.generatedMessage = [
+            `${receiver}${state.draft.salutation}：`,
+            openingMap[state.draft.salutation],
+            imageryMap[state.draft.imagery],
+            message,
+            '随批附上些许心意，聊作问安之资，望君珍重。',
+            `此复，${sender}谨书。`
+        ].join('\n\n');
+
+        updatePreview();
+        navigateTo('page-send-preview');
+    }
+
+    function updatePreview() {
+        const template = state.templates[state.currentTemplateIdx];
+        const receiverWithTitle = state.draft.receiver + state.draft.salutation;
+        const parts = (state.draft.generatedMessage || '').split('\n\n').filter(Boolean);
+        const salutation = parts.shift() || `${receiverWithTitle}：`;
+        const signoff = parts.pop() || `${state.draft.sender}谨书。`;
+        const body = parts.join('\n\n');
+
+        document.getElementById('preview-meta-to').innerText = '致 ' + receiverWithTitle;
+        document.getElementById('preview-salutation').innerText = salutation;
+        document.getElementById('preview-body').innerText = body;
+        document.getElementById('preview-signoff').innerText = signoff.replace('。', '\n');
+        document.getElementById('preview-paper').className = 'letter-preview-paper qiaopi-paper p-5 relative overflow-hidden ' + template.id;
+    }
+
+    function goToAmount() {
+        document.getElementById('amount-template-name').innerText = state.templates[state.currentTemplateIdx].name;
+        document.getElementById('amount-receiver').innerText = state.draft.receiver + state.draft.salutation;
+        document.getElementById('in-amount').value = state.draft.amount;
+        calcFee();
+        navigateTo('page-send-amount');
+    }
+
+    function doPay() {
+        const amt = document.getElementById('in-amount').value;
+        if (!amt || parseFloat(amt) <= 0) return showToast('请填写批金');
+
+        state.draft.amount = amt;
+        const to = state.draft.receiver + state.draft.salutation;
+        const msg = state.draft.generatedMessage || state.draft.message;
+
+        showToast('正在调起微信支付...');
+        setTimeout(() => {
+            setupCover({ sender: state.draft.sender, amount: amt, msg: msg, receiver: to, style: state.templates[state.currentTemplateIdx].id }, 'send');
+            navigateTo('page-cover');
+        }, 1500);
+    }
+
+    function renderList() {
+        const container = document.getElementById('list-container');
+        container.innerHTML = '';
+        state.mails.forEach(m => {
+            container.innerHTML += `
+                <div class="bg-white p-4 rounded-xl flex items-center shadow-sm btn-active" onclick="handleListClick(${m.id})">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center ${m.isOpened ? 'bg-gray-100 text-gray-400' : 'bg-[#c12c26] text-white'}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <div class="flex justify-between font-bold"><span>${m.sender}</span><span class="text-xs text-gray-400">${m.date}</span></div>
+                        <div class="text-xs ${m.isOpened ? 'text-gray-400' : 'text-[#c12c26]'} mt-1">${m.isOpened ? '已阅' : '[未拆封] 汇入 ¥ ' + m.amount}</div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    let activeMail = null;
+    function handleListClick(id) {
+        activeMail = state.mails.find(m => m.id === id);
+        if (activeMail.isOpened) {
+            setupDetail(activeMail);
+            navigateTo('page-detail');
+        } else {
+            setupCover(activeMail, 'receive');
+            navigateTo('page-cover');
+        }
+    }
+
+    function setupCover(mail, mode) {
+        const template = state.templates.find(t => t.id === (mail.style || 'style-default')) || state.templates[0];
+        document.getElementById('cv-to').innerText = (mail.receiver || mail.sender) + ' 亲启';
+        const firstLine = mail.msg.split('\n').find(Boolean) || mail.msg;
+        document.getElementById('cv-first').innerText = firstLine.replace(/\s+/g, '').substring(0, 12);
+        document.getElementById('cover-badge-text').innerText = template.coverBadge || '银信';
+        document.getElementById('cover-stamp').innerHTML = template.coverStampSvg || '';
+        const coverTitle = document.getElementById('cover-main-title');
+        coverTitle.className = 'cover-main-title w-full h-full flex items-center justify-center px-2 ' + (template.coverTitleClass || 'cover-title-ink-regular') + ' ' + (template.coverTitleStyleClass || 'cover-title-style-slender');
+        coverTitle.innerHTML = `<div class="cover-main-title-text">侨批</div>`;
+        const paper = document.getElementById('cover-paper');
+        paper.className = 'qiaopi-paper style-default w-full h-[580px] flex justify-between p-6 overflow-hidden';
+        paper.classList.remove('style-default', 'style-romance', 'style-family');
+        paper.classList.add(mail.style || 'style-default');
+        document.getElementById('cv-first').className = 'vertical-text cover-side-note text-[1.65rem] text-[#2c241b] font-bold mt-14 p-3 border border-black/10 max-h-[24rem] overflow-hidden ' + (template.coverNoteClass || 'rounded-sm');
+
+        const coverPage = document.getElementById('page-cover');
+        coverPage.classList.remove('cover-animate');
+        void coverPage.offsetWidth;
+        coverPage.classList.add('cover-animate');
+
+        const btnBox = document.getElementById('cover-btns');
+        if (mode === 'send') {
+            document.getElementById('cover-tip').innerText = template.coverTip || '封缄完毕，寄往乡里';
+            btnBox.innerHTML = `
+                <button class="flex-1 py-3 cover-button-outline ${template.coverBtnOutlineClass || 'cover-btn-default-outline'}" onclick="navigateTo('page-send')">书写新侨批</button>
+                <button class="flex-1 py-3 cover-button-primary ${template.coverBtnClass || 'cover-btn-default'}" onclick="showToast('已转发给微信好友')">${template.coverSendLabel || '托付信使 (转发)'}</button>
+            `;
+        } else {
+            document.getElementById('cover-tip').innerText = '客从远方来，遗我一书札';
+            btnBox.innerHTML = `<button class="w-full py-3 cover-button-primary ${template.coverBtnClass || 'cover-btn-default'}" onclick="openLetter()">${template.coverReceiveLabel || '点击展信'}</button>`;
+        }
+        activeMail = mail;
+    }
+
+    function openLetter() {
+        activeMail.isOpened = true;
+        setupDetail(activeMail);
+        navigateTo('page-detail');
+    }
+
+    function setupDetail(mail) {
+        document.getElementById('dt-from').innerText = '来自 ' + (mail.sender || '匿名') + ' 的侨批';
+        document.getElementById('dt-amount').innerText = mail.amount;
+        const parts = (mail.msg || '').split('\n\n').filter(Boolean);
+        const detailReceiver = mail.receiver ? (mail.receiver + '亲启') : '吾家亲启';
+        let recipient = detailReceiver + '：';
+        let body = mail.msg || '';
+        let signoff = (mail.sender || '来信人') + '谨寄';
+
+        if (parts.length >= 3) {
+            recipient = parts.shift();
+            signoff = parts.pop();
+            body = parts.join('\n\n');
+        }
+
+        document.getElementById('dt-recipient').innerText = recipient;
+        document.getElementById('dt-body').innerText = body;
+        document.getElementById('dt-signoff').innerText = signoff.replace('。', '\n');
+    }
+
+    function goBackFromCover() {
+        navigateTo(state.lastMainPage);
+    }
+
+    function submitWithdraw() {
+        const val = parseFloat(document.getElementById('w-in-amount').value);
+        const checked = document.getElementById('w-check').checked;
+        if (!checked) return showToast('请勾选实名认证');
+        if (!val || val <= 0) return showToast('请输入金额');
+        if (val > 520) return showToast('余额不足');
+        if (val > 2000) return showToast('单日限额 2000 元');
+
+        showToast('提交成功，钱庄审理中...');
+        setTimeout(() => navigateTo('page-mine'), 1500);
+    }
+
+    function getCaptureParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            capture: params.get('capture') || '',
+            mode: params.get('mode') || '',
+            mailId: parseInt(params.get('mailId') || '101', 10)
+        };
+    }
+
+    function applyCaptureMode() {
+        const params = getCaptureParams();
+        if (!params.capture) return;
+
+        state.draft.sender = '微信用户 (张三)';
+        state.draft.receiver = '淑柔';
+        state.draft.salutation = '吾妻';
+        state.draft.imagery = '红豆';
+        state.draft.message = '别来无恙，海天迢递，念你最深。近来一切安稳，只是时常想起家中灯火。';
+        state.draft.generatedMessage = [
+            '淑柔吾妻：',
+            '见字如晤，灯下展笺，如对卿面。',
+            '红豆最能寄思，字里行间皆是相念。',
+            '别来无恙，海天迢递，念你最深。近来一切安稳，只是时常想起家中灯火。',
+            '随批附上些许心意，聊作问安之资，望君珍重。',
+            '此复，张三谨书。'
+        ].join('\n\n');
+        state.draft.amount = '13.14';
+
+        const styleIndexMap = {
+            'page-send': 0,
+            'page-send-compose': 0,
+            'page-send-preview': 0,
+            'page-send-amount': 0,
+            'page-cover-send': 0,
+            'page-list': 1,
+            'page-cover-receive': 1,
+            'page-detail': 1,
+            'page-mine': 2,
+            'page-withdraw': 2,
+            'page-q-ledger': 2,
+            'page-w-ledger': 2,
+            'page-history': 2
+        };
+
+        if (typeof styleIndexMap[params.capture] === 'number') {
+            state.currentTemplateIdx = styleIndexMap[params.capture];
+        }
+
+        renderTemplateList();
+        syncComposeInputs();
+        renderList();
+        updatePreview();
+
+        if (params.capture === 'page-send') {
+            navigateTo('page-send');
+            return;
+        }
+
+        if (params.capture === 'page-send-compose') {
+            syncComposeInputs();
+            navigateTo('page-send-compose');
+            return;
+        }
+
+        if (params.capture === 'page-send-preview') {
+            updatePreview();
+            navigateTo('page-send-preview');
+            return;
+        }
+
+        if (params.capture === 'page-send-amount') {
+            goToAmount();
+            return;
+        }
+
+        if (params.capture === 'page-cover-send') {
+            setupCover({
+                sender: state.draft.sender,
+                amount: state.draft.amount,
+                msg: state.draft.generatedMessage,
+                receiver: state.draft.receiver + state.draft.salutation,
+                style: state.templates[state.currentTemplateIdx].id
+            }, 'send');
+            navigateTo('page-cover');
+            return;
+        }
+
+        if (params.capture === 'page-cover-receive') {
+            const mail = state.mails.find(m => m.id === params.mailId) || state.mails[0];
+            setupCover(mail, 'receive');
+            navigateTo('page-cover');
+            return;
+        }
+
+        if (params.capture === 'page-detail') {
+            const mail = state.mails.find(m => m.id === params.mailId) || state.mails[0];
+            mail.isOpened = true;
+            setupDetail(mail);
+            navigateTo('page-detail');
+            return;
+        }
+
+        navigateTo(params.capture);
+    }
+
+    renderTemplateList();
+    syncComposeInputs();
+    renderList();
+    applyCaptureMode();
+</script>
+</body>
+</html>
